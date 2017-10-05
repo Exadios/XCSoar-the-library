@@ -28,7 +28,6 @@ add_custom_command(OUTPUT ${OUTPUT_INCLUDE}/MathTables.h
                    VERBATIM)
 set_source_files_properties(${TOOLS_BIN}/generatesinetables
                             PROPERTIES GENERATE TRUE)
-
 add_custom_command(OUTPUT ${OUTPUT_INCLUDE}/InputEvents_altair.cpp
                    COMMAND [ -d ${OUTPUT_INCLUDE} ] || mkdir ${OUTPUT_INCLUDE}
                    COMMAND perl ${TOOLS_DIR}/xci2cpp.pl ${XCSOAR}/Data/Input/default.xci ${XCSOAR}/Data/Input/altair.xci > ${OUTPUT_INCLUDE}/InputEvents_altair.cpp

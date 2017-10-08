@@ -342,7 +342,6 @@ set(OTHER_SRCS ${DRIVER_DIR}/AltairPro.cpp
                ${DRIVER_DIR}/Generic.cpp
                ${DRIVER_DIR}/LevilAHRS_G.cpp
                ${DRIVER_DIR}/Leonardo.cpp
-               ${DRIVER_DIR}/GTAltimeter.cpp
                ${DRIVER_DIR}/NmeaOut.cpp
                ${DRIVER_DIR}/OpenVario.cpp
                ${DRIVER_DIR}/PosiGraph.cpp

@@ -9,9 +9,9 @@
  * 
  * JasPer License Version 2.0
  * 
+ * Copyright (c) 2001-2006 Michael David Adams
  * Copyright (c) 1999-2000 Image Power, Inc.
  * Copyright (c) 1999-2000 The University of British Columbia
- * Copyright (c) 2001-2003 Michael David Adams
  * 
  * All rights reserved.
  * 
@@ -84,7 +84,7 @@
 #include "jpc_t1cod.h"
 #include "jpc_tsfb.h"
 
-double jpc_pow2i(int n);
+static double jpc_pow2i(int n);
 
 /******************************************************************************\
 * Global data.
@@ -138,9 +138,9 @@ int JPC_NOMINALGAIN(int qmfbid, int numlvls, int lvlno, int orient)
 	/* Avoid compiler warnings about unused parameters. */
 	numlvls = 0;
 
-if (qmfbid == JPC_COX_INS) {
-	return 0;
-}
+	if (qmfbid == JPC_COX_INS) {
+		return 0;
+	}
 	assert(qmfbid == JPC_COX_RFT);
 	if (lvlno == 0) {
 		assert(orient == JPC_TSFB_LL);
@@ -154,11 +154,11 @@ if (qmfbid == JPC_COX_INS) {
 		case JPC_TSFB_HH:
 			return 2;
 			break;
+		default:
+			abort();
+			break;
 		}
 	}
-	abort();
-	// JMW shouldn't get here?
-	return 0;
 }
 
 /******************************************************************************\
@@ -312,7 +312,6 @@ int jpc_getzcctxno(int f, int orient)
 		t = h;
 		h = v;
 		v = t;
-		// fallthrough
 	case JPC_TSFB_LL:
 	case JPC_TSFB_LH:
 		if (!h) {

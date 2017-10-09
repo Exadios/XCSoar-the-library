@@ -443,30 +443,22 @@ target_include_directories(Screen-${T} SYSTEM PUBLIC
                            /usr/include/freetype2)  # For Font.cpp
 
 set(JASPER_DIR ${XCSOAR_SRC}/Terrain/jasper)
-set(JASPER_SRCS ${JASPER_DIR}/base/jas_debug.c
-                ${JASPER_DIR}/base/jas_malloc.c
+set(JASPER_SRCS ${JASPER_DIR}/base/jas_malloc.c
                 ${JASPER_DIR}/base/jas_seq.c
                 ${JASPER_DIR}/base/jas_stream.c
                 ${JASPER_DIR}/base/jas_string.c
                 ${JASPER_DIR}/base/jas_tvp.c
                 ${JASPER_DIR}/jp2/jp2_cod.c
-                ${JASPER_DIR}/jp2/jp2_dec.c
                 ${JASPER_DIR}/jpc/jpc_bs.c
                 ${JASPER_DIR}/jpc/jpc_cs.c
                 ${JASPER_DIR}/jpc/jpc_dec.c
                 ${JASPER_DIR}/jpc/jpc_math.c
-                ${JASPER_DIR}/jpc/jpc_mct.c
                 ${JASPER_DIR}/jpc/jpc_mqdec.c
-                ${JASPER_DIR}/jpc/jpc_mqcod.c
                 ${JASPER_DIR}/jpc/jpc_qmfb.c
-                ${JASPER_DIR}/jpc/jpc_rtc.cpp
                 ${JASPER_DIR}/jpc/jpc_t1dec.c
                 ${JASPER_DIR}/jpc/jpc_t1cod.c
                 ${JASPER_DIR}/jpc/jpc_t2dec.c
-                ${JASPER_DIR}/jpc/jpc_t2cod.c
-                ${JASPER_DIR}/jpc/jpc_tagtree.c
-                ${JASPER_DIR}/jpc/jpc_tsfb.c
-                ${JASPER_DIR}/jpc/jpc_util.c)
+                ${JASPER_DIR}/jpc/jpc_tagtree.c)
 add_library(Jasper-${T} ${JASPER_SRCS})
 #get_target_property(JASPER_INCLUDES Jasper-${T} INCLUDE_DIRECTORIES)
 #set(JASPER_INCLUDES ${JASPER_INCLUDES} ${XCSOAR_SRC}/Terrain)
@@ -478,7 +470,10 @@ include_directories(${XCSOAR_SRC}/Terrain)
 target_compile_options(Jasper-${T}
                        PRIVATE -Wno-error=implicit-function-declaration
                        PRIVATE -Wno-error=unused-but-set-parameter
-                       PRIVATE -Wno-error=unused-but-set-variable)
+                       PRIVATE -Wno-error=unused-but-set-variable
+                       PRIVATE -Wno-error=type-limits
+                       PRIVATE -Wno-error=sign-compare
+                       PRIVATE -Drestrict=__restrict__)
 target_link_libraries(Jasper-${T} Zzip-${T})
 
 set(ZZIP_DIR ${XCSOAR_SRC}/zzip)

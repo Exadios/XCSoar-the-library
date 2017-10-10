@@ -15,7 +15,8 @@ set(UTIL_SRCS ${UTIL_DIR}/CRC.cpp
              ${UTIL_DIR}/UTF8.cpp
              ${UTIL_DIR}/tstring.cpp)
 include_directories(${XCSOAR_SRC} ${XCSOAR_SRC}/unix ${UTIL_DIR})
-add_library(Util-${T} ${UTIL_SRCS})
+add_library(Util-static-${T} STATIC ${UTIL_SRCS})
+add_library(Util-shared-${T} SHARED ${UTIL_SRCS})
 
 set(GEO_DIR ${XCSOAR_SRC}/Geo)
 set(GEO_SRCS ${GEO_DIR}/ConvexHull/GrahamScan.cpp
@@ -41,7 +42,8 @@ set(GEO_SRCS ${GEO_DIR}/ConvexHull/GrahamScan.cpp
 	           ${GEO_DIR}/GeoEllipse.cpp
 	           ${GEO_DIR}/UTM.cpp)
 include_directories(${XCSOAR_SRC} ${GEO_DIR})
-add_library(Geo-${T} ${GEO_SRCS})
+add_library(Geo-static-${T} STATIC ${GEO_SRCS})
+add_library(Geo-shared-${T} SHARED ${GEO_SRCS})
 
 set(MATH_DIR ${XCSOAR_SRC}/Math)
 set(MATH_SRCS ${MATH_DIR}/Angle.cpp
@@ -57,7 +59,8 @@ set(MATH_SRCS ${MATH_DIR}/Angle.cpp
               ${MATH_DIR}/KalmanFilter1d.cpp
               ${MATH_DIR}/SelfTimingKalmanFilter1d.cpp)
 include_directories(${XCSOAR_SRC} ${MATH_DIR} ${OUTPUT_INCLUDE})
-add_library(Math-${T} ${MATH_SRCS})
+add_library(Math-static-${T} STATIC ${MATH_SRCS})
+add_library(Math-shared-${T} SHARED ${MATH_SRCS})
 
 set(IO_DIR ${XCSOAR_SRC}/IO)
 set(IO_SRCS ${IO_DIR}/FileTransaction.cpp
@@ -78,15 +81,18 @@ set(IO_SRCS ${IO_DIR}/FileTransaction.cpp
             ${IO_DIR}/BinaryWriter.cpp
             ${IO_DIR}/TextWriter.cpp)
 include_directories(${XCSOAR_SRC} ${IO_DIR})
-add_library(Io-${T} ${IO_SRCS})
+add_library(Io-static-${T} STATIC ${IO_SRCS})
+add_library(Io-shared-${T} SHARED ${IO_SRCS})
 
 set(WAYPOINTENGINE_DIR ${XCSOAR_SRC}/Engine/Waypoint)
 set(WAYPOINTENGINE_SRCS ${WAYPOINTENGINE_DIR}/WaypointVisitor.cpp
                         ${WAYPOINTENGINE_DIR}/Waypoints.cpp
                         ${WAYPOINTENGINE_DIR}/Waypoint.cpp)
 include_directories(${XCSOAR_SRC} ${WAYPOINTENGINE_DIR})
-add_library(WaypointEngine-${T} ${WAYPOINTENGINE_SRCS})
-target_link_libraries(WaypointEngine-${T} Geo-${T} Math-${T})
+add_library(WaypointEngine-static-${T} STATIC ${WAYPOINTENGINE_SRCS})
+add_library(WaypointEngine-shared-${T} SHARED ${WAYPOINTENGINE_SRCS})
+target_link_libraries(WaypointEngine-static-${T} Geo-static-${T} Math-static-${T})
+target_link_libraries(WaypointEngine-shared-${T} Geo-shared-${T} Math-shared-${T})
 
 set(ROUTEENGINE_DIR ${XCSOAR_SRC}/Engine/Route)
 set(ROUTEENGINE_SRCS ${ROUTEENGINE_DIR}/Config.cpp
@@ -101,7 +107,8 @@ set(ROUTEENGINE_SRCS ${ROUTEENGINE_DIR}/Config.cpp
                      ${ROUTEENGINE_DIR}/ReachFan.cpp
                      ${ROUTEENGINE_DIR}/Config.cpp)
 include_directories(${XCSOAR_SRC} ${ROUTEENGINE_DIR} ${XCSOAR_SRC}/Engine)
-add_library(RouteEngine-${T} ${ROUTEENGINE_SRCS})
+add_library(RouteEngine-static-${T} STATIC ${ROUTEENGINE_SRCS})
+add_library(RouteEngine-shared-${T} SHARED ${ROUTEENGINE_SRCS})
 
 set(GLIDEENGINE_DIR ${XCSOAR_SRC}/Engine/GlideSolvers)
 set(GLIDEENGINE_SRCS ${GLIDEENGINE_DIR}/GlideSettings.cpp
@@ -112,7 +119,8 @@ set(GLIDEENGINE_SRCS ${GLIDEENGINE_DIR}/GlideSettings.cpp
                      ${GLIDEENGINE_DIR}/GlideResult.cpp
                      ${GLIDEENGINE_DIR}/MacCready.cpp)
 include_directories(${XCSOAR_SRC} ${GLIDEENGINE_DIR})
-add_library(GlideEngine-${T} ${GLIDEENGINE_SRCS})
+add_library(GlideEngine-static-${T} STATIC ${GLIDEENGINE_SRCS})
+add_library(GlideEngine-shared-${T} SHARED ${GLIDEENGINE_SRCS})
 
 set(CONTESTENGINE_DIR ${XCSOAR_SRC}/Engine/Contest)
 set(CONTESTENGINE_SRCS ${CONTESTENGINE_DIR}/Settings.cpp
@@ -135,7 +143,8 @@ set(CONTESTENGINE_SRCS ${CONTESTENGINE_DIR}/Settings.cpp
                        ${CONTESTENGINE_DIR}/Solvers/NetCoupe.cpp
                        ${CONTESTENGINE_DIR}/Solvers/Retrospective.cpp)
 include_directories(${XCSOAR_SRC} ${CONTESTENGINE_DIR})
-add_library(ContestEngine-${T} ${CONTESTENGINE_SRCS})
+add_library(ContestEngine-static-${T} STATIC ${CONTESTENGINE_SRCS})
+add_library(ContestEngine-shared-${T} SHARED ${CONTESTENGINE_SRCS})
 
 set(TASKENGINE_DIR ${XCSOAR_SRC}/Engine/Task)
 set(TASKENGINE_SRCS ${TASKENGINE_DIR}/Shapes/FAITriangleSettings.cpp
@@ -216,12 +225,16 @@ set(TASKENGINE_SRCS ${TASKENGINE_DIR}/Shapes/FAITriangleSettings.cpp
                     ${TASKENGINE_DIR}/Stats/TaskStats.cpp
                     ${TASKENGINE_DIR}/Stats/StartStats.cpp)
 include_directories(${XCSOAR_SRC} ${TASKENGINE_DIR})
-add_library(TaskEngine-${T} ${TASKENGINE_SRCS})
+add_library(TaskEngine-static-${T} STATIC ${TASKENGINE_SRCS})
+add_library(TaskEngine-shared-${T} SHARED ${TASKENGINE_SRCS})
 # TaskEngine should not depend on XCSoarMain but is made necessary because of
 # the sematics of the original XCSoar build system.
-target_link_libraries(TaskEngine-${T} GlideEngine-${T} 
-                                      RouteEngine-${T}
-                                      XCSoarMain-${T})
+target_link_libraries(TaskEngine-static-${T} GlideEngine-static-${T} 
+                                             RouteEngine-static-${T}
+                                             XCSoarMain-static-${T})
+target_link_libraries(TaskEngine-shared-${T} GlideEngine-shared-${T} 
+                                             RouteEngine-shared-${T}
+                                             XCSoarMain-shared-${T})
 
 set(AIRSPACEENGINE_DIR ${XCSOAR_SRC}/Engine/Airspace)
 set(ENGINE_DIR   ${XCSOAR_SRC}/Engine)
@@ -247,7 +260,8 @@ set(AIRSPACEENGINE_SRCS ${ENGINE_DIR}/Util/AircraftStateFilter.cpp
                         ${AIRSPACEENGINE_DIR}/AirspaceWarning.cpp
                         ${AIRSPACEENGINE_DIR}/AirspaceSorter.cpp)
 include_directories(${XCSOAR_SRC} ${AIRSPACEENGINE_DIR})
-add_library(AirspaceEngine-${T} ${AIRSPACEENGINE_SRCS})
+add_library(AirspaceEngine-static-${T} STATIC ${AIRSPACEENGINE_SRCS})
+add_library(AirspaceEngine-shared-${T} SHARED ${AIRSPACEENGINE_SRCS})
 
 # Device drivers
 set(DRIVER_DIR ${XCSOAR_SRC}/Device/Driver)
@@ -350,7 +364,9 @@ set(DRIVER_SRCS ${VOLKSLOGGER_SRCS}
                 ${BLUEFLY_SRCS}
                 ${OTHER_SRCS})
 include_directories(${XCSOAR_SRC} ${DRIVER_DIR})
-add_library(Driver-${T} ${DRIVER_SRCS})
+#set(OUTPUT_NAME Driver-${T})
+add_library(Driver-static-${T} STATIC ${DRIVER_SRCS})
+add_library(Driver-shared-${T} SHARED ${DRIVER_SRCS})
 
 set(SHAPE_DIR ${XCSOAR_SRC}/Topography/shapelib)
 set(SHAPE_SRCS ${SHAPE_DIR}/mapstring.c
@@ -362,7 +378,8 @@ set(SHAPE_SRCS ${SHAPE_DIR}/mapstring.c
                ${SHAPE_DIR}/maptree.c
                ${SHAPE_DIR}/mapxbase.c)
 include_directories(${XCSOAR_SRC} ${SHAPE_DIR})
-add_library(Shape-${T} ${SHAPE_SRCS})
+add_library(Shape-static-${T} STATIC ${SHAPE_SRCS})
+add_library(Shape-shared-${T} SHARED ${SHAPE_SRCS})
 
 set(OS_DIR ${XCSOAR_SRC}/OS)
 set(OS_SRCS ${OS_DIR}/Clock.cpp
@@ -376,7 +393,8 @@ set(OS_SRCS ${OS_DIR}/Clock.cpp
 if(HAVE_POSIX)
   set(OS_SRCS ${OS_SRCS} ${OS_DIR}/Poll.cpp ${OS_DIR}/EventPipe.cpp)
 endif(HAVE_POSIX)
-add_library(Os-${T} ${OS_SRCS})
+add_library(Os-static-${T} STATIC ${OS_SRCS})
+add_library(Os-shared-${T} SHARED ${OS_SRCS})
 
 set(THREAD_DIR ${XCSOAR_SRC}/Thread)
 set(THREAD_SRCS	${XCSOAR_SRC}/Poco/RWLock.cpp
@@ -387,8 +405,10 @@ set(THREAD_SRCS	${XCSOAR_SRC}/Poco/RWLock.cpp
                 ${THREAD_DIR}/StandbyThread.cpp
                 ${THREAD_DIR}/Mutex.cpp
                 ${THREAD_DIR}/Debug.cpp)
-add_library(Thread-${T} ${THREAD_SRCS})
-target_link_libraries(Thread-${T} pthread)
+add_library(Thread-static-${T} STATIC ${THREAD_SRCS})
+add_library(Thread-shared-${T} SHARED ${THREAD_SRCS})
+target_link_libraries(Thread-static-${T} pthread)
+target_link_libraries(Thread-shared-${T} pthread)
 
 set(TERRAIN_DIR ${XCSOAR_SRC}/Terrain)
 set(TERRAIN_SRCS ${TERRAIN_DIR}/RasterBuffer.cpp
@@ -406,8 +426,10 @@ set(TERRAIN_SRCS ${TERRAIN_DIR}/RasterBuffer.cpp
                  ${TERRAIN_DIR}/TerrainRenderer.cpp
                  ${TERRAIN_DIR}/WeatherTerrainRenderer.cpp
                  ${TERRAIN_DIR}/TerrainSettings.cpp)
-add_library(Terrain-${T} ${TERRAIN_SRCS})
-target_link_libraries(Terrain-${T} Jasper-${T})
+add_library(Terrain-static-${T} STATIC ${TERRAIN_SRCS})
+add_library(Terrain-shared-${T} SHARED ${TERRAIN_SRCS})
+target_link_libraries(Terrain-static-${T} Jasper-static-${T})
+target_link_libraries(Terrain-shared-${T} Jasper-shared-${T})
 
 set(PROFILE_DIR ${XCSOAR_SRC}/Profile)
 set(PROFILE_SRCS ${PROFILE_DIR}/File.cpp
@@ -419,8 +441,10 @@ set(PROFILE_SRCS ${PROFILE_DIR}/File.cpp
                  ${PROFILE_DIR}/GeoValue.cpp
                  ${PROFILE_DIR}/ProfileKeys.cpp
                  ${PROFILE_DIR}/ProfileMap.cpp)
-add_library(Profile-${T} ${PROFILE_SRCS})
-target_link_libraries(Profile-${T} Io-${T})
+add_library(Profile-static-${T} STATIC ${PROFILE_SRCS})
+add_library(Profile-shared-${T} SHARED ${PROFILE_SRCS})
+target_link_libraries(Profile-static-${T} Io-static-${T})
+target_link_libraries(Profile-shared-${T} Io-shared-${T})
 
 set(TIME_DIR ${XCSOAR_SRC}/Time)
 set(TIME_SRCS ${TIME_DIR}/DeltaTime.cpp
@@ -429,7 +453,8 @@ set(TIME_SRCS ${TIME_DIR}/DeltaTime.cpp
               ${TIME_DIR}/BrokenTime.cpp
               ${TIME_DIR}/BrokenDate.cpp
               ${TIME_DIR}/BrokenDateTime.cpp)
-add_library(Time-${T} ${TIME_SRCS})
+add_library(Time-static-${T} STATIC ${TIME_SRCS})
+add_library(Time-shared-${T} SHARED ${TIME_SRCS})
 
 set(SCREEN_DIR ${XCSOAR_SRC}/Screen)
 set(SCREEN_SRCS ${SCREEN_DIR}/Debug.cpp
@@ -437,10 +462,14 @@ set(SCREEN_SRCS ${SCREEN_DIR}/Debug.cpp
 #                ${SCREEN_DIR}/FreeType/Font.cpp
 #                ${SCREEN_DIR}/FreeType/Init.cpp
    )
-add_library(Screen-${T} ${SCREEN_SRCS})
-target_link_libraries(Screen-${T} pthread freetype)
-target_include_directories(Screen-${T} SYSTEM PUBLIC
+add_library(Screen-static-${T} STATIC ${SCREEN_SRCS})
+add_library(Screen-shared-${T} SHARED ${SCREEN_SRCS})
+target_link_libraries(Screen-static-${T} pthread freetype)
+target_link_libraries(Screen-shared-${T} pthread freetype)
+target_include_directories(Screen-static-${T} SYSTEM PUBLIC
                            /usr/include/freetype2)  # For Font.cpp
+target_include_directories(Screen-shared-${T} SYSTEM PUBLIC
+                           /usr/include/freetype2)
 
 set(JASPER_DIR ${XCSOAR_SRC}/Terrain/jasper)
 set(JASPER_SRCS ${JASPER_DIR}/base/jas_malloc.c
@@ -459,22 +488,31 @@ set(JASPER_SRCS ${JASPER_DIR}/base/jas_malloc.c
                 ${JASPER_DIR}/jpc/jpc_t1cod.c
                 ${JASPER_DIR}/jpc/jpc_t2dec.c
                 ${JASPER_DIR}/jpc/jpc_tagtree.c)
-add_library(Jasper-${T} ${JASPER_SRCS})
-#get_target_property(JASPER_INCLUDES Jasper-${T} INCLUDE_DIRECTORIES)
+add_library(Jasper-static-${T} STATIC ${JASPER_SRCS})
+add_library(Jasper-shared-${T} SHARED ${JASPER_SRCS})
+#get_target_property(JASPER_INCLUDES Jasper-static-${T} INCLUDE_DIRECTORIES)
 #set(JASPER_INCLUDES ${JASPER_INCLUDES} ${XCSOAR_SRC}/Terrain)
-#set_target_properties(Jasper-${T}
+#set_target_properties(Jasper-static-${T}
 #                      PROPERTIES INCLUDE_DIRECTORIES ${JASPER_INCLUDES})
 include_directories(${XCSOAR_SRC}/Terrain)
 # It is an unfortunate fact that Jasper compiles with warnings. Turn off
 # the errors that would occur.
-target_compile_options(Jasper-${T}
+target_compile_options(Jasper-static-${T}
                        PRIVATE -Wno-error=implicit-function-declaration
                        PRIVATE -Wno-error=unused-but-set-parameter
                        PRIVATE -Wno-error=unused-but-set-variable
                        PRIVATE -Wno-error=type-limits
                        PRIVATE -Wno-error=sign-compare
                        PRIVATE -Drestrict=__restrict__)
-target_link_libraries(Jasper-${T} Zzip-${T})
+target_compile_options(Jasper-shared-${T}
+                       PRIVATE -Wno-error=implicit-function-declaration
+                       PRIVATE -Wno-error=unused-but-set-parameter
+                       PRIVATE -Wno-error=unused-but-set-variable
+                       PRIVATE -Wno-error=type-limits
+                       PRIVATE -Wno-error=sign-compare
+                       PRIVATE -Drestrict=__restrict__)
+target_link_libraries(Jasper-static-${T} Zzip-static-${T})
+target_link_libraries(Jasper-shared-${T} Zzip-shared-${T})
 
 set(ZZIP_DIR ${XCSOAR_SRC}/zzip)
 set(ZZIP_SRCS ${ZZIP_DIR}/fetch.c
@@ -482,8 +520,10 @@ set(ZZIP_SRCS ${ZZIP_DIR}/fetch.c
               ${ZZIP_DIR}/plugin.c
               ${ZZIP_DIR}/zip.c
               ${ZZIP_DIR}/stat.c)
-add_library(Zzip-${T} ${ZZIP_SRCS})
-target_link_libraries(Zzip-${T} z)
+add_library(Zzip-static-${T} STATIC ${ZZIP_SRCS})
+add_library(Zzip-shared-${T} SHARED ${ZZIP_SRCS})
+target_link_libraries(Zzip-static-${T} z)
+target_link_libraries(Zzip-shared-${T} z)
 
 set(MAIN_SRCS ${XCSOAR_SRC}/LocalPath.cpp
               ${XCSOAR_SRC}/Profile/Profile.cpp
@@ -578,31 +618,59 @@ set(MAIN_SRCS ${XCSOAR_SRC}/LocalPath.cpp
               ${XCSOAR_SRC}/Units/Settings.cpp
               )
 include_directories(${XCSOAR_SRC})
-add_library(XCSoarMain-${T} ${MAIN_SRCS})
-target_link_libraries(XCSoarMain-${T} Profile-${T}
-                                      Os-${T}
-                                      Util-${T}
-                                      ContestEngine-${T}
-                                      AirspaceEngine-${T})
+add_library(XCSoarMain-static-${T} STATIC ${MAIN_SRCS})
+add_library(XCSoarMain-shared-${T} SHARED ${MAIN_SRCS})
+target_link_libraries(XCSoarMain-static-${T} Profile-static-${T}
+                                             Os-static-${T}
+                                             Util-static-${T}
+                                             ContestEngine-static-${T}
+                                             AirspaceEngine-static-${T})
+target_link_libraries(XCSoarMain-static-${T} Profile-shared-${T}
+                                             Os-shared-${T}
+                                             Util-shared-${T}
+                                             ContestEngine-shared-${T}
+                                             AirspaceEngine-shared-${T})
 
 add_custom_target(xcsoar-${T}
-                  DEPENDS AirspaceEngine-${T}
-                          ContestEngine-${T}
-                          Driver-${T}
-                          Geo-${T}
-                          Terrain-${T}
-                          Jasper-${T}
-                          Zzip-${T}
-                          Profile-${T}
-                          GlideEngine-${T}
-                          Io-${T}
-                          Math-${T}
-                          RouteEngine-${T}
-                          Shape-${T}
-                          TaskEngine-${T}
-                          Util-${T}
-                          Time-${T}
-                          WaypointEngine-${T}
-                          Os-${T}
-                          Thread-${T}
-                          XCSoarMain-${T})
+                  DEPENDS AirspaceEngine-static-${T}
+                          AirspaceEngine-shared-${T}
+                          ContestEngine-static-${T}
+                          ContestEngine-shared-${T}
+                          Driver-static-${T}
+                          Driver-shared-${T}
+                          Geo-static-${T}
+                          Geo-shared-${T}
+                          Terrain-static-${T}
+                          Terrain-shared-${T}
+                          Jasper-static-${T}
+                          Jasper-shared-${T}
+                          Zzip-static-${T}
+                          Zzip-shared-${T}
+                          Profile-static-${T}
+                          Profile-shared-${T}
+                          GlideEngine-static-${T}
+                          GlideEngine-shared-${T}
+                          Io-static-${T}
+                          Io-shared-${T}
+                          Math-static-${T}
+                          Math-shared-${T}
+                          RouteEngine-static-${T}
+                          RouteEngine-shared-${T}
+                          Shape-static-${T}
+                          Shape-shared-${T}
+                          TaskEngine-static-${T}
+                          TaskEngine-shared-${T}
+                          Util-static-${T}
+                          Util-shared-${T}
+                          Time-static-${T}
+                          Time-shared-${T}
+                          Screen-static-${T}
+                          Screen-shared-${T}
+                          WaypointEngine-static-${T}
+                          WaypointEngine-shared-${T}
+                          Os-static-${T}
+                          Os-shared-${T}
+                          Thread-static-${T}
+                          Thread-shared-${T}
+                          XCSoarMain-static-${T}
+                          XCSoarMain-shared-${T})

@@ -51,7 +51,6 @@ set(MATH_SRCS ${MATH_DIR}/Angle.cpp
               ${MATH_DIR}/FastMath.cpp
               ${MATH_DIR}/FastTrig.cpp
               ${MATH_DIR}/FastRotation.cpp
-              ${MATH_DIR}/fixed.cpp
               ${MATH_DIR}/LeastSquares.cpp
               ${MATH_DIR}/DiffFilter.cpp
               ${MATH_DIR}/Filter.cpp
@@ -63,22 +62,23 @@ add_library(Math-static-${T} STATIC ${MATH_SRCS})
 add_library(Math-shared-${T} SHARED ${MATH_SRCS})
 
 set(IO_DIR ${XCSOAR_SRC}/IO)
-set(IO_SRCS ${IO_DIR}/FileTransaction.cpp
+set(IO_SRCS ${IO_DIR}/BufferedReader.cxx
+            ${IO_DIR}/FileReader.cxx
+            ${IO_DIR}/BufferedOutputStream.cxx
+            ${IO_DIR}/FileOutputStream.cxx
+            ${IO_DIR}/GunzipReader.cxx
+            ${IO_DIR}/ZlibError.cxx
+            ${IO_DIR}/FileTransaction.cpp
             ${IO_DIR}/FileCache.cpp
-            ${IO_DIR}/FileSource.cpp
-            ${IO_DIR}/ZipSource.cpp
-            ${IO_DIR}/InflateSource.cpp
-            ${IO_DIR}/LineSplitter.cpp
+            ${IO_DIR}/ZipArchive.cpp
+            ${IO_DIR}/ZipArchive.cpp
+            ${IO_DIR}/ZipReader.cpp
             ${IO_DIR}/ConvertLineReader.cpp
             ${IO_DIR}/FileLineReader.cpp
             ${IO_DIR}/KeyValueFileReader.cpp
             ${IO_DIR}/KeyValueFileWriter.cpp
             ${IO_DIR}/ZipLineReader.cpp
-            ${IO_DIR}/InflateLineReader.cpp
-            ${IO_DIR}/TextFile.cpp
             ${IO_DIR}/CSVLine.cpp
-            ${IO_DIR}/BatchTextWriter.cpp
-            ${IO_DIR}/BinaryWriter.cpp
             ${IO_DIR}/TextWriter.cpp)
 include_directories(${XCSOAR_SRC} ${IO_DIR})
 add_library(Io-static-${T} STATIC ${IO_SRCS})
@@ -250,10 +250,8 @@ set(AIRSPACEENGINE_SRCS ${ENGINE_DIR}/Util/AircraftStateFilter.cpp
                         ${AIRSPACEENGINE_DIR}/AirspaceIntersectSort.cpp
                         ${AIRSPACEENGINE_DIR}/SoonestAirspace.cpp
                         ${AIRSPACEENGINE_DIR}/Predicate/AirspacePredicate.cpp
-                        ${AIRSPACEENGINE_DIR}/Predicate/AirspacePredicateAircraftInside.cpp
                         ${AIRSPACEENGINE_DIR}/Predicate/AirspacePredicateHeightRange.cpp
                         ${AIRSPACEENGINE_DIR}/Predicate/OutsideAirspacePredicate.cpp
-                        ${AIRSPACEENGINE_DIR}/AirspaceVisitor.cpp
                         ${AIRSPACEENGINE_DIR}/AirspaceIntersectionVisitor.cpp
                         ${AIRSPACEENGINE_DIR}/AirspaceWarningConfig.cpp
                         ${AIRSPACEENGINE_DIR}/AirspaceWarningManager.cpp
@@ -275,7 +273,6 @@ set(VOLKSLOGGER_SRCS ${DRIVER_DIR}/Volkslogger/Register.cpp
                      ${DRIVER_DIR}/Volkslogger/grecord.cpp
                      ${DRIVER_DIR}/Volkslogger/vlapi2.cpp
                      ${DRIVER_DIR}/Volkslogger/vlapihlp.cpp
-                     ${DRIVER_DIR}/Volkslogger/vlutils.cpp
                      ${DRIVER_DIR}/Volkslogger/vlconv.cpp
                      ${DRIVER_DIR}/Volkslogger/Logger.cpp)
 set(CAI302_SRCS ${DRIVER_DIR}/CAI302/Protocol.cpp
@@ -369,9 +366,9 @@ add_library(Driver-static-${T} STATIC ${DRIVER_SRCS})
 add_library(Driver-shared-${T} SHARED ${DRIVER_SRCS})
 
 set(SHAPE_DIR ${XCSOAR_SRC}/Topography/shapelib)
-set(SHAPE_SRCS ${SHAPE_DIR}/mapstring.c
+set(SHAPE_SRCS ${SHAPE_DIR}/mapalloc.c
+               ${SHAPE_DIR}/mapstring.c
                ${SHAPE_DIR}/mapbits.c
-               ${SHAPE_DIR}/mapfile.c
                ${SHAPE_DIR}/mapprimitive.c
                ${SHAPE_DIR}/mapsearch.c
                ${SHAPE_DIR}/mapshape.c
@@ -391,19 +388,17 @@ set(OS_SRCS ${OS_DIR}/Clock.cpp
             ${OS_DIR}/Process.cpp
             ${OS_DIR}/SystemLoad.cpp)
 if(HAVE_POSIX)
-  set(OS_SRCS ${OS_SRCS} ${OS_DIR}/Poll.cpp ${OS_DIR}/EventPipe.cpp)
+  set(OS_SRCS ${OS_SRCS} ${OS_DIR}/EventPipe.cpp)
 endif(HAVE_POSIX)
 add_library(Os-static-${T} STATIC ${OS_SRCS})
 add_library(Os-shared-${T} SHARED ${OS_SRCS})
 
 set(THREAD_DIR ${XCSOAR_SRC}/Thread)
-set(THREAD_SRCS	${XCSOAR_SRC}/Poco/RWLock.cpp
-                ${THREAD_DIR}/Thread.cpp
+set(THREAD_SRCS	${THREAD_DIR}/Thread.cpp
                 ${THREAD_DIR}/SuspensibleThread.cpp
                 ${THREAD_DIR}/RecursivelySuspensibleThread.cpp
                 ${THREAD_DIR}/WorkerThread.cpp
                 ${THREAD_DIR}/StandbyThread.cpp
-                ${THREAD_DIR}/Mutex.cpp
                 ${THREAD_DIR}/Debug.cpp)
 add_library(Thread-static-${T} STATIC ${THREAD_SRCS})
 add_library(Thread-shared-${T} SHARED ${THREAD_SRCS})
@@ -416,15 +411,16 @@ set(TERRAIN_SRCS ${TERRAIN_DIR}/RasterBuffer.cpp
                  ${TERRAIN_DIR}/RasterMap.cpp
                  ${TERRAIN_DIR}/RasterTile.cpp
                  ${TERRAIN_DIR}/RasterTileCache.cpp
+                 ${TERRAIN_DIR}/ZzipStream.cpp
+                 ${TERRAIN_DIR}/Loader.cpp
+                 ${TERRAIN_DIR}/WorldFile.cpp
                  ${TERRAIN_DIR}/Intersection.cpp
                  ${TERRAIN_DIR}/ScanLine.cpp
                  ${TERRAIN_DIR}/RasterTerrain.cpp
-                 ${TERRAIN_DIR}/RasterWeatherStore.cpp
-                 ${TERRAIN_DIR}/RasterWeatherCache.cpp
+                 ${TERRAIN_DIR}/Thread.cpp
                  ${TERRAIN_DIR}/HeightMatrix.cpp
                  ${TERRAIN_DIR}/RasterRenderer.cpp
                  ${TERRAIN_DIR}/TerrainRenderer.cpp
-                 ${TERRAIN_DIR}/WeatherTerrainRenderer.cpp
                  ${TERRAIN_DIR}/TerrainSettings.cpp)
 add_library(Terrain-static-${T} STATIC ${TERRAIN_SRCS})
 add_library(Terrain-shared-${T} SHARED ${TERRAIN_SRCS})
@@ -611,7 +607,6 @@ set(MAIN_SRCS ${XCSOAR_SRC}/LocalPath.cpp
               ${XCSOAR_SRC}/Tracking/TrackingSettings.cpp
               ${XCSOAR_SRC}/Logger/Settings.cpp
               ${XCSOAR_SRC}/Airspace/AirspaceComputerSettings.cpp
-              ${XCSOAR_SRC}/Audio/VegaVoiceSettings.cpp
               ${XCSOAR_SRC}/TeamCode/Settings.cpp
               ${XCSOAR_SRC}/Computer/Wind/Settings.cpp
               ${XCSOAR_SRC}/Device/Config.cpp

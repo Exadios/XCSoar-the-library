@@ -1,7 +1,14 @@
+set(CMAKE_C_COMPILER /opt/gcc-5.5.0/bin/gcc CACHE FILEPATH "Default C Compiler")
+set(CMAKE_CXX_COMPILER /opt/gcc-5.5.0/bin/g++ CACHE FILEPATH "Default CXX Compiler")
 project(XCSoar-the-library)
 cmake_minimum_required(VERSION 3.0)
 
 enable_testing()
+
+#unset(CMAKE_C_COMPILER CACHE)
+#unset(CMAKE_CXX_COMPILER CACHE)
+#find_program(CMAKE_C_COMPILER NAMES gcc cc HINTS /opt/gcc-5.5.0/bin)
+#find_program(CMAKE_CXX_COMPILER NAMES g++ c++ HINTS /opt/gcc-5.5.0/bin)
 
 set_property(GLOBAL PROPERTY JOB_POOLS compile_pool=4)
 set_property(GLOBAL PROPERTY JOB_POOL_COMPILE compile_pool)

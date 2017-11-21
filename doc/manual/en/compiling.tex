@@ -138,13 +138,12 @@ sudo apt-get install default-jdk-headless vorbis-tools adb
 \end{verbatim*}}
 \end{itemize}
 
-The required Android SDK components are:
-\begin{itemize}
-\item Android SDK Build-Tools 26.0.0
-\item SDK Platform 22
-\end{itemize}
-These can be installed from the Android Studio SDK Manager, or using the SDK
-command line tools:
+The \texttt{Makefile} assumes that the Android SDK is installed in
+\verb|~/opt/android-sdk-linux| and the NDK is installed in
+\verb|~/opt/android-ndk-r16|.  You can use the options
+\verb|ANDROID_SDK| and \verb|ANDROID_NDK| to override these paths.
+
+After installing Java you will have to install at least one Android Platform SDK using the Android SDK Manager:
 
 \begin{verbatim*}
 tools/bin/sdkmanager \

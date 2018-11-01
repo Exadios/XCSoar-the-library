@@ -9,6 +9,18 @@ LIBNET_SOURCES = \
 	$(SRC)/Net/SocketAddress.cxx \
 	$(SRC)/Net/SocketDescriptor.cxx
 
+HAVE_HTTP := n
+
+ifneq ($(MAKECMDGOALS),python)
+ifneq ($(findstring $(TARGET),PC WINE CYGWIN),)
+HAVE_HTTP := y
+LIBNET_SOURCES += \
+	$(SRC)/Net/HTTP/WinINet/Session.cpp \
+	$(SRC)/Net/HTTP/WinINet/Request.cpp
+LIBNET_LDLIBS = -lwininet
+endif
+
+ifeq ($(TARGET),UNIX)
 HAVE_HTTP := y
 
 LIBNET_SOURCES += \
@@ -29,6 +41,16 @@ $(eval $(call pkg-config-library,CURL,libcurl))
 LIBNET_CPPFLAGS = $(CURL_CPPFLAGS)
 LIBNET_LDADD = $(ZLIB_LDADD)
 LIBNET_LDLIBS = $(CURL_LDLIBS) $(ZLIB_LDLIBS)
+endif
+endif
+
+ifeq ($(TARGET),ANDROID)
+HAVE_HTTP := y
+
+LIBNET_SOURCES += \
+	$(SRC)/Net/HTTP/Java/Session.cpp \
+	$(SRC)/Net/HTTP/Java/Request.cpp
+endif
 endif
 
 ifeq ($(HAVE_HTTP),y)

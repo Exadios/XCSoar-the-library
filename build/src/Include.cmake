@@ -499,6 +499,7 @@ target_compile_options(Jasper-static-${T}
                        PRIVATE -Wno-error=unused-but-set-variable
                        PRIVATE -Wno-error=type-limits
                        PRIVATE -Wno-error=sign-compare
+                       PRIVATE -Wno-error=shift-negative-value
                        PRIVATE -Drestrict=__restrict__)
 target_compile_options(Jasper-shared-${T}
                        PRIVATE -Wno-error=implicit-function-declaration
@@ -506,6 +507,7 @@ target_compile_options(Jasper-shared-${T}
                        PRIVATE -Wno-error=unused-but-set-variable
                        PRIVATE -Wno-error=type-limits
                        PRIVATE -Wno-error=sign-compare
+                       PRIVATE -Wno-error=shift-negative-value
                        PRIVATE -Drestrict=__restrict__)
 target_link_libraries(Jasper-static-${T} Zzip-static-${T})
 target_link_libraries(Jasper-shared-${T} Zzip-shared-${T})
@@ -625,6 +627,10 @@ target_link_libraries(XCSoarMain-static-${T} Profile-shared-${T}
                                              Util-shared-${T}
                                              ContestEngine-shared-${T}
                                              AirspaceEngine-shared-${T})
+set_target_properties(XCSoarMain-static-${T} 
+                      PROPERTIES COMPILE_FLAGS "-fexceptions")
+set_target_properties(XCSoarMain-shared-${T}
+                      PROPERTIES COMPILE_FLAGS "-fexceptions")
 
 add_custom_target(xcsoar-${T}
                   DEPENDS AirspaceEngine-static-${T}

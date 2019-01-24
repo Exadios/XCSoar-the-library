@@ -499,6 +499,7 @@ target_compile_options(Jasper-static-${T}
                        PRIVATE -Wno-error=unused-but-set-variable
                        PRIVATE -Wno-error=type-limits
                        PRIVATE -Wno-error=sign-compare
+                       PRIVATE -Wno-error=shift-negative-value
                        PRIVATE -Drestrict=__restrict__)
 target_compile_options(Jasper-shared-${T}
                        PRIVATE -Wno-error=implicit-function-declaration
@@ -506,6 +507,7 @@ target_compile_options(Jasper-shared-${T}
                        PRIVATE -Wno-error=unused-but-set-variable
                        PRIVATE -Wno-error=type-limits
                        PRIVATE -Wno-error=sign-compare
+                       PRIVATE -Wno-error=shift-negative-value
                        PRIVATE -Drestrict=__restrict__)
 target_link_libraries(Jasper-static-${T} Zzip-static-${T})
 target_link_libraries(Jasper-shared-${T} Zzip-shared-${T})
@@ -604,7 +606,6 @@ set(MAIN_SRCS ${XCSOAR_SRC}/LocalPath.cpp
               ${XCSOAR_SRC}/Dialogs/DialogSettings.cpp
               ${XCSOAR_SRC}/Audio/Settings.cpp
               ${XCSOAR_SRC}/Renderer/AirspaceRendererSettings.cpp
-              ${XCSOAR_SRC}/Tracking/TrackingSettings.cpp
               ${XCSOAR_SRC}/Logger/Settings.cpp
               ${XCSOAR_SRC}/Airspace/AirspaceComputerSettings.cpp
               ${XCSOAR_SRC}/TeamCode/Settings.cpp
@@ -625,6 +626,10 @@ target_link_libraries(XCSoarMain-static-${T} Profile-shared-${T}
                                              Util-shared-${T}
                                              ContestEngine-shared-${T}
                                              AirspaceEngine-shared-${T})
+set_target_properties(XCSoarMain-static-${T} 
+                      PROPERTIES COMPILE_FLAGS "-fexceptions")
+set_target_properties(XCSoarMain-shared-${T}
+                      PROPERTIES COMPILE_FLAGS "-fexceptions")
 
 add_custom_target(xcsoar-${T}
                   DEPENDS AirspaceEngine-static-${T}

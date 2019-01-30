@@ -1,10 +1,11 @@
 add_subdirectory(tools)
+add_subdirectory(resource)
 add_subdirectory(generate)
 add_subdirectory(src)
 
 add_custom_target(debug DEPENDS xcsoar-debug)
 add_custom_target(release DEPENDS xcsoar-release)
-add_custom_target(linux-32 DEPENDS xcsoar-linux-32)
+add_custom_target(linux DEPENDS xcsoar-linux)
 
 add_custom_target(doc DEPENDS xcsoar_doc)
 

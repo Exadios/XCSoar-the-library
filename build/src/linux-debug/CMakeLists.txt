@@ -1,5 +1,5 @@
 set(CMAKE_BUILD_TYPE Debug)
-set(T "linux-32-release")
+set(T "linux-debug")
 set(USE_MEMORY_CANVAS y)
 add_definitions(-DHAVE_POSIX
                 -DHAVE_STDINT_H

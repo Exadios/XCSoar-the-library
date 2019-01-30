@@ -6,5 +6,8 @@ set(OUTPUT_INCLUDE ${XCSoar-the-library_BINARY_DIR}/include)
 
 include_directories(${XCSOAR_SRC})
 
+add_custom_target(tools
+                  DEPENDS generatesinetables) # Convenience target.
+
 add_executable(generatesinetables ${TOOLS_DIR}/GenerateSineTables.cpp)
 

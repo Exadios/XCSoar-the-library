@@ -460,8 +460,8 @@ set(SCREEN_SRCS ${SCREEN_DIR}/Debug.cpp
    )
 add_library(Screen-static-${T} STATIC ${SCREEN_SRCS})
 add_library(Screen-shared-${T} SHARED ${SCREEN_SRCS})
-target_link_libraries(Screen-static-${T} pthread freetype)
-target_link_libraries(Screen-shared-${T} pthread freetype)
+target_link_libraries(Screen-static-${T} Util-static-${T} pthread freetype)
+target_link_libraries(Screen-shared-${T} Util-shared-${T} pthread freetype)
 target_include_directories(Screen-static-${T} SYSTEM PUBLIC
                            /usr/include/freetype2)  # For Font.cpp
 target_include_directories(Screen-shared-${T} SYSTEM PUBLIC

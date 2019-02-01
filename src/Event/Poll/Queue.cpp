@@ -86,8 +86,7 @@ EventQueue::Pop(Event &event)
 
   ScopeLock protect(mutex);
   if (events.empty()) {
-    if (Generate(event))
-      return true;
+    return Generate(event);
   }
 
   event = events.front();

@@ -3,9 +3,9 @@
 #add_subdirectory(generate)
 add_subdirectory(src)
 
-add_custom_target(debug          DEPENDS native-debug)
-add_custom_target(release        DEPENDS native-release)
-add_custom_target(linux          DEPENDS native-linux)
+add_custom_target(debug          DEPENDS linux-debug)
+add_custom_target(release        DEPENDS linux-release)
+add_custom_target(linux          DEPENDS linux-native)
 
 add_custom_target(doc DEPENDS xcsoar_doc)
 

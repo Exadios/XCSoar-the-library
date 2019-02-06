@@ -7,3 +7,5 @@ add_subdirectory(linux-native-release)
 add_custom_target(linux-native
                   DEPENDS linux-native-debug
                           linux-native-release)
+add_custom_target(linux-release DEPENDS linux-native-release)
+add_custom_target(linux-debug   DEPENDS linux-native-debug)

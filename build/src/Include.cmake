@@ -674,3 +674,4 @@ add_custom_target(xcsoar-${T}
                           Thread-shared-${T}
                           XCSoarMain-static-${T}
                           XCSoarMain-shared-${T})
+add_custom_target(${T} DEPENDS xcsoar-${T})

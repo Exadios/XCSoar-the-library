@@ -63,11 +63,16 @@ struct WritableImageBuffer {
     return x < width && y < height;
   }
 
-  constexpr pointer_type At(unsigned x, unsigned y) {
+  /*
+   * It is not possible to overload the At() functions when they are
+   * 'constexpr'. This should work but does not with g++ 6.3.0.
+   * \todo Return At() to constexpr
+   */
+  pointer_type At(unsigned x, unsigned y) {
     return PixelTraits::At(data, pitch, x, y);
   }
 
-  constexpr const_pointer_type At(unsigned x, unsigned y) const {
+  const const_pointer_type At(unsigned x, unsigned y) const {
     return PixelTraits::At(data, pitch, x, y);
   }
 };

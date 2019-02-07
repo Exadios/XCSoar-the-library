@@ -153,19 +153,24 @@ public:
 		return data[i];
 	}
 
-	constexpr iterator begin() {
+  /*
+   * Using 'constexpr' for both begin() and end() causes overload problems.
+   * It should work but does not with g++ 6.3.0 - don't know why. So
+   * 'constexpr' removed - maybe restored later.
+   */
+	iterator begin() {
 		return data.begin();
 	}
 
-	constexpr const_iterator begin() const {
+	const const_iterator begin() const {
 		return data.begin();
 	}
 
-	constexpr iterator end() {
+	iterator end() {
 		return std::next(data.begin(), the_size);
 	}
 
-	constexpr const_iterator end() const {
+	const const_iterator end() const {
 		return std::next(data.begin(), the_size);
 	}
 

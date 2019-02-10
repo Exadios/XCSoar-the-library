@@ -424,8 +424,8 @@ set(TERRAIN_SRCS ${TERRAIN_DIR}/RasterBuffer.cpp
                  ${TERRAIN_DIR}/TerrainSettings.cpp)
 add_library(Terrain-static-${T} STATIC ${TERRAIN_SRCS})
 add_library(Terrain-shared-${T} SHARED ${TERRAIN_SRCS})
-target_link_libraries(Terrain-static-${T} Jasper-static-${T})
-target_link_libraries(Terrain-shared-${T} Jasper-shared-${T})
+target_link_libraries(Terrain-static-${T} Jasper-static-${T} pthread)
+target_link_libraries(Terrain-shared-${T} Jasper-shared-${T} pthread)
 
 set(PROFILE_DIR ${XCSOAR_SRC}/Profile)
 set(PROFILE_SRCS ${PROFILE_DIR}/File.cpp

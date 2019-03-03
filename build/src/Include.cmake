@@ -384,6 +384,7 @@ set(OS_SRCS ${OS_DIR}/Clock.cpp
             ${OS_DIR}/FileMapping.cpp
             ${OS_DIR}/FileUtil.cpp
             ${OS_DIR}/RunFile.cpp
+            ${OS_DIR}/Path.cpp
             ${OS_DIR}/PathName.cpp
             ${OS_DIR}/Process.cpp
             ${OS_DIR}/SystemLoad.cpp)

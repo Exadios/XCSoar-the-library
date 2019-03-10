@@ -622,7 +622,7 @@ target_link_libraries(XCSoarMain-static-${T} Profile-static-${T}
                                              Util-static-${T}
                                              ContestEngine-static-${T}
                                              AirspaceEngine-static-${T})
-target_link_libraries(XCSoarMain-static-${T} Profile-shared-${T}
+target_link_libraries(XCSoarMain-shared-${T} Profile-shared-${T}
                                              Os-shared-${T}
                                              Util-shared-${T}
                                              ContestEngine-shared-${T}

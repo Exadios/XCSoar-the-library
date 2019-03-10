@@ -79,7 +79,10 @@ set(IO_SRCS ${IO_DIR}/BufferedReader.cxx
             ${IO_DIR}/KeyValueFileWriter.cpp
             ${IO_DIR}/ZipLineReader.cpp
             ${IO_DIR}/CSVLine.cpp
-            ${IO_DIR}/TextWriter.cpp)
+            ${IO_DIR}/TextWriter.cpp
+            ${IO_DIR}/MapFile.cpp
+            ${IO_DIR}/ConfiguredFile.cpp
+            ${IO_DIR}/DataFile.cpp)
 include_directories(${XCSOAR_SRC} ${IO_DIR})
 add_library(Io-static-${T} STATIC ${IO_SRCS})
 add_library(Io-shared-${T} SHARED ${IO_SRCS})

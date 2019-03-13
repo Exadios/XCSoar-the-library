@@ -5,6 +5,7 @@ add_subdirectory(src)
 
 add_custom_target(debug          DEPENDS linux-debug)
 add_custom_target(release        DEPENDS linux-release)
+add_custom_target(sanitize       DEPENDS linux-sanitize)
 add_custom_target(linux          DEPENDS linux-native)
 
 add_custom_target(doc DEPENDS xcsoar_doc)

@@ -126,7 +126,8 @@ set(GLIDEENGINE_SRCS ${GLIDEENGINE_DIR}/GlideSettings.cpp
                      ${GLIDEENGINE_DIR}/GlidePolar.cpp
                      ${GLIDEENGINE_DIR}/PolarCoefficients.cpp
                      ${GLIDEENGINE_DIR}/GlideResult.cpp
-                     ${GLIDEENGINE_DIR}/MacCready.cpp)
+                     ${GLIDEENGINE_DIR}/MacCready.cpp
+                     ${GLIDEENGINE_DIR}/InstantSpeed.cpp)
 include_directories(${XCSOAR_SRC} ${GLIDEENGINE_DIR})
 add_library(GlideEngine-static-${T} STATIC ${GLIDEENGINE_SRCS})
 add_library(GlideEngine-shared-${T} SHARED ${GLIDEENGINE_SRCS})
@@ -502,11 +503,15 @@ set(JASPER_SRCS ${JASPER_DIR}/base/jas_malloc.c
                 ${JASPER_DIR}/jpc/jpc_dec.c
                 ${JASPER_DIR}/jpc/jpc_math.c
                 ${JASPER_DIR}/jpc/jpc_mqdec.c
+                ${JASPER_DIR}/jpc/jpc_mqcod.c
                 ${JASPER_DIR}/jpc/jpc_qmfb.c
+                ${JASPER_DIR}/jpc/jpc_rtc.cpp
                 ${JASPER_DIR}/jpc/jpc_t1dec.c
                 ${JASPER_DIR}/jpc/jpc_t1cod.c
                 ${JASPER_DIR}/jpc/jpc_t2dec.c
-                ${JASPER_DIR}/jpc/jpc_tagtree.c)
+                ${JASPER_DIR}/jpc/jpc_t2cod.c
+                ${JASPER_DIR}/jpc/jpc_tagtree.c
+                ${JASPER_DIR}/jpc/jpc_tsfb.c)
 add_library(Jasper-static-${T} STATIC ${JASPER_SRCS})
 add_library(Jasper-shared-${T} SHARED ${JASPER_SRCS})
 add_library(Jasper-object-${T} OBJECT ${JASPER_SRCS})

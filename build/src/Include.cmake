@@ -7,10 +7,19 @@ add_definitions(-DZLIB_CONST) # Make some of zlib const.
 add_definitions(-DUSE_WGS84 -DRADIANS -DEYE_CANDY)
 
 set(UTIL_DIR ${XCSOAR_SRC}/Util)
-set(UTIL_SRCS ${UTIL_DIR}/CRC.cpp
+set(UTIL_SRCS ${UTIL_DIR}/Exception.cxx
+              ${UTIL_DIR}/PrintException.cxx
+              ${UTIL_DIR}/Base64.cxx
+              ${UTIL_DIR}/CRC.cpp
+              ${UTIL_DIR}/ASCII.cxx
+              ${UTIL_DIR}/TruncateString.cpp
               ${UTIL_DIR}/EscapeBackslash.cpp
               ${UTIL_DIR}/StringUtil.cpp
               ${UTIL_DIR}/ConvertString.cpp
+              ${UTIL_DIR}/StaticString.cxx
+              ${UTIL_DIR}/AllocatedString.cxx
+              ${UTIL_DIR}/StringView.cxx
+              ${UTIL_DIR}/StringCompare.cxx
               ${UTIL_DIR}/ExtractParameters.cpp
               ${UTIL_DIR}/UTF8.cpp
               ${UTIL_DIR}/tstring.cpp)

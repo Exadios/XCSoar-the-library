@@ -1299,6 +1299,7 @@ install(FILES ${TASK_HDRS}      DESTINATION "include/Task")
 install(FILES ${OPERATION_HDRS} DESTINATION "include/Operation")
 install(FILES ${XML_HDRS}       DESTINATION "include/XML")
 install(FILES ${FORMATTER_HDRS} DESTINATION "include/Formatter")
+install(FILES ${XCSOAR_SRC}/Compiler.h DESTINATION "include")
 
 add_custom_target(xcsoar-${T}
                   DEPENDS AirspaceEngine-static-${T}
